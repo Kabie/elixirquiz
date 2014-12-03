@@ -20,14 +20,18 @@ defmodule RunLengthEncoding do
   defp _encode("", encoded) do
     encoded
     |> Enum.reverse
-    |> Enum.map(fn {n, c} ->
+    |> Enum.map_join(fn {n, c} ->
       to_string(n) <> <<c>>
     end)
-    |> Enum.join
   end
 
   def decode(text) do
-
+    text
+    |> to_char_list
+    |> Enum.chunk(2)
+    |> Enum.map_join(fn [n, c] ->
+      List.duplicate(c, String.to_integer(<<n>>))
+    end)
   end
 
 end
